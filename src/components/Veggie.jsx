@@ -6,25 +6,25 @@ import "@splidejs/splide/dist/css/splide.min.css";
 
 function Veggie() {
 
-  const [popular, setPopular] = useState([]);
+  const [veggie, setVeggie] = useState([]);
 
   useEffect(() => {
-    getPopular();
+    getVeggie();
   }, []);
 
-  const getPopular = async () => {
-    const check = localStorage.getItem('popular');
+  const getVeggie = async () => {
+    const check = localStorage.getItem('veggie');
 
     if (check) {
-      setPopular(JSON.parse(check));
+      setVeggie(JSON.parse(check));
     } else {
     const api = await fetch(
-      `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
+      `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
     );
     const data = await api.json();
 
-    localStorage.setItem("popular", JSON.stringify(data.recipes));
-    setPopular(data.recipes);
+    localStorage.setItem("veggie", JSON.stringify(data.recipes));
+    setVeggie(data.recipes);
     console.log(data.recipes);
     }
   };
@@ -35,14 +35,14 @@ function Veggie() {
         <h3>Veggie</h3>
         <Splide
           options={{
-            perPage: 4,
+            perPage: 3,
             arrows: false,
             pagination: false,
             drag: "free",
             gap: "5rem",
           }}
         >
-          {popular.map((recipe) => {
+          {veggie.map((recipe) => {
             return (
               <SplideSlide>
                 <Card>
@@ -64,7 +64,7 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
-  min-height: 20rem;
+  min-height: 15rem;
   border-radius: 2rem;
   overflow: hidden;
   position: relative;
